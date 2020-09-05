@@ -1,18 +1,14 @@
 import os
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
-import datetime
-import time
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.select import Select
 
 
 def main():
-    UserName='########' # ########替换为学号
-    Password='********' # ********替换为密码
+    UserName = '########'   # ########替换为学号
+    Password = '********'   # ********替换为密码
     url = "http://ehall.xidian.edu.cn/xsfw/sys/ssxfapp/*default/index.do#/indexpagenew"
-    dateToday = datetime.date.today().strftime("%Y-%m-%d")
-    openTime = dateToday + " 9:00:00"
 
     # 创建浏览器对象
     chromeOptions = Options()
@@ -26,9 +22,9 @@ def main():
 
     driver.get(url)
     inputUserName = driver.find_elements_by_id('username')
-    inputUserName[0].send_keys(UserName)  
+    inputUserName[0].send_keys(UserName)
     inputPassword = driver.find_elements_by_id('password')
-    inputPassword[0].send_keys(Password)  
+    inputPassword[0].send_keys(Password)
     driver.find_element_by_css_selector(
         "[class='auth_login_btn primary full_width']").click()
 
@@ -45,13 +41,20 @@ def main():
                 '[data-action="selectRoom"]').click()
             break
         except Exception:
-            print("找不到正式选房按钮")
-            if datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f') < openTime:
-                localTime = datetime.datetime.strptime(
-                    openTime, "%Y-%m-%d %H:%M:%S")
-                print('预约未开始，离开始还有', (localTime-datetime.datetime.now()))
-            else:
-                print('预约开始')
+
+            try:
+                if driver.find_element_by_css_selector('h3[class|="timer"]').is_displayed():
+                    print('\r预约未开始，离开始还有', driver.find_element_by_css_selector(
+                        'h3[class|="timer"]').text, end='', flush=True)
+
+                else:
+                    if not driver.find_element_by_css_selector('h3[class|="timer"]').is_displayed():
+                        print("找不到正式选房按钮")
+
+                    print('预约开始')
+
+            except Exception:
+                print('\r 找不到计时器', end='', flush=True)
 
     try:
         WebDriverWait(driver, 60, 0.1).until(
