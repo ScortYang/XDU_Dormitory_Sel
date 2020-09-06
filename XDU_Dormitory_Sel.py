@@ -6,8 +6,8 @@ from selenium.webdriver.support.select import Select
 
 
 def main():
-    UserName = '20111212941'   # ########替换为学号
-    Password = 'SY190111@xdu'  # ********替换为密码
+    UserName = '########'   # ########替换为学号
+    Password = '********'  # ********替换为密码
     url = "http://ehall.xidian.edu.cn/xsfw/sys/ssxfapp/*default/index.do#/indexpagenew"
 
     # 创建浏览器对象
