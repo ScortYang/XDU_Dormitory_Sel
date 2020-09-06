@@ -6,8 +6,8 @@ from selenium.webdriver.support.select import Select
 
 
 def main():
-    UserName = '########'   # ########替换为学号
-    Password = '********'   # ********替换为密码
+    UserName = '20111212941'   # ########替换为学号
+    Password = 'SY190111@xdu'  # ********替换为密码
     url = "http://ehall.xidian.edu.cn/xsfw/sys/ssxfapp/*default/index.do#/indexpagenew"
 
     # 创建浏览器对象
@@ -59,10 +59,17 @@ def main():
     try:
         WebDriverWait(driver, 60, 0.1).until(
             lambda x: x.find_element_by_id('oneKeyChooseBtn'))
-        driver.find_element_by_id('oneKeyChooseBtn').click()
 
     except Exception:
         print(url, '服务器超时，或其他原因！')
+
+    while True:
+        try:
+            print(driver.find_element_by_xpath(
+                '/html/body/div[5]/div[1]/div[1]/div[2]/div[1]/div').text)
+            break
+        except Exception:
+            pass
 
 
 if __name__ == '__main__':
